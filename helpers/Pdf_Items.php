@@ -68,7 +68,7 @@ class Pdf_Items
 		$pdf->Ln(8);
 
 		// Display AdditionalResource specific values
-		if (plugin_is_active('AdditionalResources')) {
+		if ($item->item_type_id != AdditionalResourcesPlugin::BIBLIOGRAPHIC_ITEM) {
 
 			$url = absolute_url('items/values/'.$item->id);
 			$json = file_get_contents($url);
