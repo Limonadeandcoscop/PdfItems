@@ -26,10 +26,10 @@ class Pdf_Items
 	 */
 	public function __construct($item)
 	{
-		$this->_pdf = new FPDF('P', 'mm', 'A4');
+		$this->_pdf = new tcpdf('P', 'mm', 'A4');
 
 		$title = metadata($item, array('Dublin Core', 'Title'));
-		$this->_pdf->SetTitle($title .' - '. utf8_decode(get_option('site_title')));
+		$this->_pdf->SetTitle($title .' - '. get_option('site_title'));
 
 		$this->_addPage($item);
 		
@@ -61,8 +61,9 @@ class Pdf_Items
 		$title = $elements['Dublin Core']['Title'];
 		$title = implode(' - ', $title);
 		$title = $this->_getValue($title);
-		$pdf->SetFont('Arial','B',16);
-		$pdf->MultiCell(0, 7, $title, 0, 1);
+		$pdf->SetFont('dejavusans','B',16);
+		$pdf->MultiCell(0, 7, $title, 0, 'L');
+
 		unset($elements['Dublin Core']['Title']);
 		$pdf->Ln(8);
 
@@ -76,20 +77,20 @@ class Pdf_Items
 			
 			foreach ($data['values'] as $section => $values) {
 
-				$pdf->SetFont('Arial','B',18);
-				$pdf->MultiCell(0, 10, $section);
+				$pdf->SetFont('dejavusans','B',18);
+				$pdf->MultiCell(0, 10, $section, 0, 'L');
 
 				foreach($values as $vals) {
 
 					$title = key($vals);
 					$datas = array_shift($vals);
 
-					$pdf->SetFont('Arial','B',11);
-					$pdf->MultiCell(0, 10, $title);
+					$pdf->SetFont('dejavusans','B',11);
+					$pdf->MultiCell(0, 10, $title, 0, 'L');
 
 					foreach ($datas as $val) {
 						
-						$pdf->SetFont('Arial','',11);
+						$pdf->SetFont('dejavusans','',11);
 						$pdf->MultiCell(0, 6, $this->_getValue($val), 0, 1);
 						$pdf->ln(3);
 					}
@@ -100,10 +101,10 @@ class Pdf_Items
 
 			foreach ($elements as $elementSetName => $elementTexts) {
 				foreach ($elementTexts as $elementName => $elementsText) {
-					$pdf->SetFont('Arial','B',12);
+					$pdf->SetFont('dejavusans','B',12);
 					$pdf->MultiCell(0, 10, str_replace('PDF:', '', __('PDF:'.$elementName)), 0, 2); // Prefix label in PDF by "PDF:", a way to override default translations with plugin translations
 					foreach ($elementsText as $element) {
-						$pdf->SetFont('Arial','',12);
+						$pdf->SetFont('dejavusans','',12);
 						$pdf->MultiCell(0, 6, $this->_getValue($element), 0, 1);
 						$pdf->ln(3);
 					}
@@ -133,8 +134,8 @@ class Pdf_Items
 	protected function _setHeader()
 	{
 		$pdf = $this->_pdf;
-		$headerText = utf8_decode(get_option('site_title'));
-	    $pdf->SetFont('Arial','',10);
+		$headerText = get_option('site_title');
+	    $pdf->SetFont('dejavusans','',10);
 	    $pdf->Ln(0);
 	    $pdf->MultiCell(0, 7, $headerText, 0, 'C');
 	    $pdf->Ln(10);
@@ -149,7 +150,7 @@ class Pdf_Items
 		$pdf = $this->_pdf;
 		$footerText = isset($item) ? $item->getProperty('permalink') : WEB_DIR;
 		$pdf->SetY(-28);
-	    $pdf->SetFont('Arial','',10);
+	    $pdf->SetFont('dejavusans','',10);
 	    $pdf->MultiCell(0, 7, $footerText, 0, 'C');
 	}
 
@@ -161,7 +162,7 @@ class Pdf_Items
 	{
 		if (strlen(trim($value))) {
 			$value = ucfirst(strip_tags($value));
-			$value = iconv("UTF-8", "ISO-8859-1//TRANSLIT", $value); // Prevent MS-Word copy/paste
+			///$value = iconv("UTF-8", "ISO-8859-1//TRANSLIT", $value); // Prevent MS-Word copy/paste
 		}
 		return $value;
 	}

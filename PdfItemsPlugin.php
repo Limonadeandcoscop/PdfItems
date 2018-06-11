@@ -12,8 +12,7 @@
 define('PDF_ITEMS_DIR', dirname(__FILE__));
 
 require_once PDF_ITEMS_DIR . '/helpers/Pdf_Items.php';
-require_once PDF_ITEMS_DIR . '/libraries/fpdf-181/fpdf.php';
-
+require_once PDF_ITEMS_DIR . '/libraries/tcpdf/tcpdf.php';
 
 /**
  * The PdfItems plugin.
