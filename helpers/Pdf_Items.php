@@ -24,7 +24,7 @@ class Pdf_Items
 	 *  - Generate pages for each item
 	 *  - Render PDF in browser
 	 */
-	public function __construct($item)
+	public function __construct($item, $download)
 	{
 		$this->_pdf = new tcpdf('P', 'mm', 'A4');
 
@@ -33,7 +33,11 @@ class Pdf_Items
 
 		$this->_addPage($item);
 		
-		$this->_render();
+		if ($download == 1) {
+			$this->_render($title);
+		} else {
+			$this->_render();
+		}
 	}
 
 
@@ -120,10 +124,14 @@ class Pdf_Items
 	/**
 	 * Add a page to PDF document
 	 */
-	protected function _render() {
+	protected function _render($title = null) {
 
-		header('Content-type: application/pdf');
-		$this->_pdf->Output();
+		if (strlen(trim($title))) {
+			$this->_pdf->Output($title.'.pdf', "D");
+		} else {
+			header('Content-type: application/pdf');
+			$this->_pdf->Output();
+		}
 		exit;
 	}
 

@@ -25,7 +25,9 @@ class PdfItems_IndexController extends Omeka_Controller_AbstractActionController
             throw new Exception("Invalid item");
         }
 
-        new Pdf_Items($item);
+        $download = $this->getParam('download');
+
+        new Pdf_Items($item, $download);
     }
 
 
