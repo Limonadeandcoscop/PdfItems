@@ -24,14 +24,17 @@ class Pdf_Items
 	 *  - Generate pages for each item
 	 *  - Render PDF in browser
 	 */
-	public function __construct($item, $download)
+	public function __construct($items, $download)
 	{
 		$this->_pdf = new tcpdf('P', 'mm', 'A4');
 
-		$title = metadata($item, array('Dublin Core', 'Title'));
+		$title = metadata($items[0], array('Dublin Core', 'Title'));
 		$this->_pdf->SetTitle($title .' - '. get_option('site_title'));
 
-		$this->_addPage($item);
+		foreach ($items as $item) {
+			$this->_addPage($item);	
+		}
+		
 		
 		if ($download == 1) {
 			$this->_render($title);
